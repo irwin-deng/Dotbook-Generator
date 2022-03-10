@@ -43,7 +43,6 @@ public class Printer {
 
     public static ArrayList<String> pdfList;
 
-    //public static void print(String title, String id, String set, String measures, String action, String side, String[] pos, double hCoord, double vCoord, int leftBound, int botBound)
     public static void print(int pIndx, int sIndx, int eIndx) throws Exception {
         pdfList = new ArrayList<>();
         Performer p = UserInterface.performers[pIndx];
@@ -103,11 +102,10 @@ public class Printer {
             double pAng = s.prevDirection;
             double nAng = s.nextDirection;
 
-            //for (int t = 0; t < 360; t += 72) {
             double[] adjst = {-39, -15};
             double[] adjst1 = {39, -15};
-            //    ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, ph1, X_ORIG + (float) adjst[0] + U * (float) (s.coords.hCoord - leftBound), Y_ORIG + (float) adjst[1] + 36.8f + U * ((float) s.coords.vCoord - botBound), t);
-            //}
+
+
             if (s.move) {
                 ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, ph1, X_ORIG + (float) rotate(adjst, pAng)[0] + U * ((float) s.coords.hCoord - leftBound), Y_ORIG + 36.8f + (float) rotate(adjst, pAng)[1] + U * ((float) s.coords.vCoord - botBound), (float) pAng);
             }
@@ -413,36 +411,3 @@ public class Printer {
         return "";
     }
 }
-
-/*
-    public void PlaceChunck(String text, int x, int y) {
-    PdfContentByte cb = writer.DirectContent;
-    BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-    cb.SaveState();
-    cb.BeginText();
-    cb.MoveText(x, y);
-    cb.SetFontAndSize(bf, 12);
-    cb.ShowText(text);
-    cb.EndText();
-    cb.RestoreState();
-}
-}
-    public static void absText(String text, int x, int y) {
-        try {
-            PdfContentByte cb = writer.getDirectContent();
-            BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-            cb.saveState();
-            cb.beginText();
-            cb.moveText(x, y);
-            cb.setFontAndSize(bf, 12);
-            cb.showText(text);
-            cb.endText();
-            cb.restoreState();
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-}
- */

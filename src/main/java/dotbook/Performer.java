@@ -58,11 +58,7 @@ public class Performer {
             if (sets[i].move) {
                 double slope = (sets[i].coords.vCoord - sets[i - 1].coords.vCoord) / (sets[i].coords.hCoord - sets[i - 1].coords.hCoord);
                 sets[i].prevSlope = slope;
-                sets[i - 1].nextSlope = slope;
-                //if(sets[i].coords.vCoord < sets[i-1].coords.vCoord && sets[i].coords.hCoord < sets[i-1].coords.hCoord) {
-                //sets[i].prevDirection += 180;
-                //sets[i-1].nextDirection += 180;
-                //}
+
                 if (sets[i].coords.hCoord == sets[i - 1].coords.hCoord) {
                     if (sets[i].coords.vCoord > sets[i - 1].coords.vCoord) {
                         sets[i].prevDirection = 90;
