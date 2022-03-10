@@ -316,7 +316,8 @@ public class UserInterface extends javax.swing.JFrame {
     }
 
     public static void openCSV() throws Exception {
-        CSVReader reader = new CSVReader(new FileReader("coordinates.csv"));
+        InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("coordinates.csv");
+        CSVReader reader = new CSVReader((Reader) new InputStreamReader(in));
         List<String[]> list = reader.readAll();
         String[][] dataArr = new String[PERFORMER_COUNT][SET_COUNT];
         dataArr = list.toArray(dataArr);

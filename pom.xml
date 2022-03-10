@@ -33,6 +33,16 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/java/resources</directory>
+                <includes>
+                    <include>**/*.csv</include>
+                    <include>**/*.pdf</include>
+                    <include>**/*.ttf</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
     <dependencies>
         <dependency>

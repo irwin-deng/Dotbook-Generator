@@ -27,6 +27,7 @@ import static dotbook.UserInterface.PERFORMER_COUNT;
 import java.io.*;
 import java.util.ArrayList;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.io.IOUtils;
 
 public class Printer {
 
@@ -46,19 +47,26 @@ public class Printer {
     public static void print(int pIndx, int sIndx, int eIndx) throws Exception {
         pdfList = new ArrayList<>();
         Performer p = UserInterface.performers[pIndx];
-        dest = "DotBook_" + p.id + "_" + p.sets[sIndx].num + (p.sets[sIndx].sub == '-' ? "" : p.sets[sIndx].sub) + "-" + p.sets[eIndx].num + (p.sets[eIndx].sub == '-' ? "" : p.sets[eIndx].sub) + ".pdf";
+        dest = "dotbook_output/DotBook_" + p.id + "_" + p.sets[sIndx].num + (p.sets[sIndx].sub == '-' ? "" : p.sets[sIndx].sub) + "-" + p.sets[eIndx].num + (p.sets[eIndx].sub == '-' ? "" : p.sets[eIndx].sub) + ".pdf";
+        File out_dir = new File("dotbook_output/");
+        out_dir.mkdirs();
+        File sets_dir = new File("dotbook_output/individual_sets/");
+        sets_dir.mkdirs();
         for (int i = sIndx; i <= eIndx; i++) {
             Set s = p.sets[i];
             int[] window = getBestView(UserInterface.performers[pIndx], i);
             int leftBound = window[0];
             int botBound = window[1];
-            PdfReader reader = new PdfReader(getSource(botBound));
-            String file = "individualSets/db_" + p.id + "_" + p.sets[i].num + (p.sets[i].sub == '-' ? "" : p.sets[i].sub) + ".pdf";
+            InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(getSource(botBound));
+            PdfReader reader = new PdfReader(in);
+            String file = "dotbook_output/individual_sets/db_" + p.id + "_" + p.sets[i].num + (p.sets[i].sub == '-' ? "" : p.sets[i].sub) + ".pdf";
             pdfList.add(file);
             PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(file));
 
             PdfContentByte canvas = stamper.getOverContent(1);
-            BaseFont comicSans = BaseFont.createFont("comic.ttf", BaseFont.WINANSI, BaseFont.EMBEDDED);
+            byte[] cBytes = IOUtils.toByteArray(Thread.currentThread().getContextClassLoader()
+                            .getResourceAsStream("comic.ttf"));
+            BaseFont comicSans = BaseFont.createFont("comic.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, cBytes, null);
 
             ColumnText.showTextAligned(canvas,
                     Element.ALIGN_CENTER, new Phrase(s.title, new Font(comicSans, 24)), 420, 566, 0);
@@ -83,7 +91,9 @@ public class Printer {
                         Element.ALIGN_CENTER, new Phrase(pos[j], new Font(comicSans, 20)), 714, 503 - 36 * j, 0);
             }
 
-            BaseFont times = BaseFont.createFont("times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            byte[] tBytes = IOUtils.toByteArray(Thread.currentThread().getContextClassLoader()
+                            .getResourceAsStream("times.ttf"));
+            BaseFont times = BaseFont.createFont("times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, tBytes, null);
             Font font = new Font(times, 60, Font.NORMAL, BaseColor.LIGHT_GRAY);
             Phrase ph1 = new Phrase();
             Phrase ph2 = new Phrase();
@@ -146,14 +156,17 @@ public class Printer {
         int sIndx = 0;
         int eIndx = 65;
         Performer p = UserInterface.performers[pIndx];
-        dest = "DotBook_" + p.id + "_" + p.sets[sIndx].num + (p.sets[sIndx].sub == '-' ? "" : p.sets[sIndx].sub) + "-" + p.sets[eIndx].num + (p.sets[eIndx].sub == '-' ? "" : p.sets[eIndx].sub) + ".pdf";
+        File out_dir = new File("dotbook_output/");
+        out_dir.mkdirs();
+        dest = "dotbook_output/DotBook_" + p.id + "_" + p.sets[sIndx].num + (p.sets[sIndx].sub == '-' ? "" : p.sets[sIndx].sub) + "-" + p.sets[eIndx].num + (p.sets[eIndx].sub == '-' ? "" : p.sets[eIndx].sub) + ".pdf";
         for (int i = sIndx; i <= eIndx; i++) {
             Set s = p.sets[i];
             int[] window = getBestView(UserInterface.performers[pIndx], i);
             int leftBound = window[0];
             int botBound = window[1];
-            PdfReader reader = new PdfReader(getSource(botBound));
-            String file = "individualSets/db_" + p.id + "_" + p.sets[i].num + (p.sets[i].sub == '-' ? "" : p.sets[i].sub) + ".pdf";
+            InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(getSource(botBound));
+            PdfReader reader = new PdfReader(in);
+            String file = "dotbook_output/individualSets/db_" + p.id + "_" + p.sets[i].num + (p.sets[i].sub == '-' ? "" : p.sets[i].sub) + ".pdf";
             pdfList.add(file);
             PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(file));
 
@@ -205,8 +218,6 @@ public class Printer {
     }
 
     public static String[] formatPos(double hAdj, String yardLine, double vAdj, String hashLine) {
-        String[] a;
-
         String h;
         if (Math.abs(hAdj) == 1) {
             h = (hAdj != 0 ? (hAdj > 0 ? (int) hAdj + " step inside " : -(int) hAdj + " step outside ") : "On ") + yardLine;

@@ -5,6 +5,16 @@
   <artifactId>Dotbook</artifactId>
   <version>1.0</version>
   <build>
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/java/resources</directory>
+        <includes>
+          <include>**/*.csv</include>
+          <include>**/*.pdf</include>
+          <include>**/*.ttf</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
