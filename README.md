@@ -3,7 +3,7 @@ A utility for learning marching band formations on a field.
 
 <div align="center">
     <a href="https://github.com/irwin-deng/Dotbook-Generator"><img src="https://img.shields.io/tokei/lines/github/irwin-deng/Dotbook-Generator" /></a>
-    <a href="https://github.com/irwin-deng/Dotbook-Generator"><img src="https://img.shields.io/github/repo-size/irwin-deng/Dotbook-Generator" /></a>
+    <a href="https://github.com/irwin-deng/Dotbook-Generator"><img src="https://img.shields.io/github/languages/code-size/irwin-deng/Dotbook-Generator" /></a>
     <a href="https://github.com/irwin-deng/Dotbook-Generator/releases"><img src="https://img.shields.io/github/v/release/irwin-deng/Dotbook-Generator" /></a>
 </div>
 
